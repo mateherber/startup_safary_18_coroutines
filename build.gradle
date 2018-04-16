@@ -1,0 +1,46 @@
+apply plugin: "com.github.ben-manes.versions"
+
+buildscript {
+    ext.kotlinVersion = "1.2.31"
+    ext.supportVersion = "27.1.1"
+    ext.kodeinVersion = "5.0.0-beta5"
+    ext.ankoVersion = "0.10.4"
+    ext.ktxVersion = "0.3"
+    ext.rxJavaVersion = "2.1.12"
+    ext.coroutinesVersion = "0.22.5"
+    ext.jacksonVersion = "2.9.5"
+    ext.retrofitVersion = "2.4.0"
+    ext.expandableLayoutVersion = "2.9.2"
+
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.1.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "com.github.ben-manes:gradle-versions-plugin:0.17.0"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven { url "http://dl.bintray.com/salomonbrys/kodein" }
+    }
+}
+
+dependencyUpdates.resolutionStrategy = {
+    componentSelection { rules ->
+        rules.all { ComponentSelection selection ->
+            boolean rejected = ["alpha", "beta", "rc", "cr", "m"].any { qualifier ->
+                selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+            }
+            if (rejected) {
+                selection.reject("Release candidate")
+            }
+        }
+    }
+}

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:installLocation="auto"
+    package="org.foxglove.hackernewsdemo">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name="org.foxglove.hackernewsdemo.application.HackerNewsApplication"
+        android:allowBackup="false"
+        android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
+        android:appCategory="news"
+        android:supportsRtl="true"
+        android:theme="@style/HackerNews"
+        tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
+
+        <activity android:name="org.foxglove.hackernewsdemo.news.ui.activity.HackerNewsActivity"/>
+
+        <activity-alias
+            android:name=".Launcher"
+            android:targetActivity="org.foxglove.hackernewsdemo.news.ui.activity.HackerNewsActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity-alias>
+    </application>
+</manifest>
