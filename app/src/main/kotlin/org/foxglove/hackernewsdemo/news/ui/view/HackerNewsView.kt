@@ -27,11 +27,15 @@ import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.backgroundColorResource
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.frameLayout
+import org.jetbrains.anko.imageResource
+import org.jetbrains.anko.imageView
 import org.jetbrains.anko.matchParent
 import org.jetbrains.anko.progressBar
 import org.jetbrains.anko.scrollView
+import org.jetbrains.anko.textColorResource
 import org.jetbrains.anko.textView
 import org.jetbrains.anko.verticalLayout
+import org.jetbrains.anko.wrapContent
 
 class HackerNewsView(
     private val presenter: IHackerNewsPresenter
@@ -99,7 +103,7 @@ class HackerNewsView(
                                     text = Html.fromHtml(comment.text)
                                 }.lparams {
                                     topMargin = dip(2)
-                                    marginStart = dip(16)
+                                    marginStart = dip(24)
                                     marginEnd = dip(8)
                                     bottomMargin = dip(2)
                                 }
@@ -107,6 +111,7 @@ class HackerNewsView(
                         }
                     }.lparams {
                         bottomMargin = dip(8)
+                        topMargin = dip(8)
                     }
                 }
             }
@@ -125,10 +130,27 @@ class HackerNewsView(
     override fun createView(ui: AnkoContext<HackerNewsActivity>) = ui.run {
         verticalLayout {
             themedToolbar(R.style.ThemeOverlay_AppCompat_ActionBar) {
+                title = ""
                 elevation = dip(4).toFloat()
                 backgroundColor = ctx.colorAttr(android.R.attr.colorPrimary)
                 setTitleTextColor(ContextCompat.getColor(ctx, R.color.text_primary_light))
                 popupTheme = R.style.ThemeOverlay_AppCompat_Light
+                imageView {
+                    imageResource = R.mipmap.ic_launcher
+                }.lparams {
+                    gravity = Gravity.START
+                    width = wrapContent
+                    height = wrapContent
+                }
+                textView {
+                    text = ctx.getString(R.string.app_name)
+                    textColorResource = R.color.text_primary_light
+                    textSize = 20f
+                }.lparams {
+                    gravity = Gravity.CENTER
+                    width = wrapContent
+                    height = wrapContent
+                }
             }.lparams {
                 width = matchParent
                 height = ctx.dimenAttr(R.attr.actionBarSize)
