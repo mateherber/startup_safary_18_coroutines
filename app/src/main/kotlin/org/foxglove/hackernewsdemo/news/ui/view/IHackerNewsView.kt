@@ -11,6 +11,7 @@ interface IHackerNewsView : AnkoComponent<HackerNewsActivity> {
     fun resume()
     fun pause()
     fun showProgress()
+    fun showError(message: String?)
     fun hideProgress()
     fun showTopStories(topStories: List<Story>)
 }

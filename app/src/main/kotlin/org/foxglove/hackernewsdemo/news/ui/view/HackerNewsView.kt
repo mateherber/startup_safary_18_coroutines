@@ -1,6 +1,7 @@
 package org.foxglove.hackernewsdemo.news.ui.view
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.Typeface.BOLD
 import android.os.Bundle
@@ -11,6 +12,8 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import android.widget.Toast
+import androidx.core.widget.toast
 import net.cachapa.expandablelayout.ExpandableLayout
 import net.cachapa.expandablelayout.ExpandableLayout.VERTICAL
 import org.foxglove.hackernewsdemo.R
@@ -40,6 +43,8 @@ import org.jetbrains.anko.wrapContent
 class HackerNewsView(
     private val presenter: IHackerNewsPresenter
 ) : IHackerNewsView {
+    private lateinit var context: Context
+
     private lateinit var content: LinearLayout
     private lateinit var progressBar: ProgressBar
 
@@ -55,6 +60,10 @@ class HackerNewsView(
 
     override fun hideProgress() {
         progressBar.visibility = GONE
+    }
+
+    override fun showError(message: String?) {
+        context.toast(message ?: "Unknown Error", Toast.LENGTH_LONG)
     }
 
     @SuppressLint("SetTextI18n")
@@ -128,6 +137,7 @@ class HackerNewsView(
     }
 
     override fun createView(ui: AnkoContext<HackerNewsActivity>) = ui.run {
+        context = ctx
         verticalLayout {
             themedToolbar(R.style.ThemeOverlay_AppCompat_ActionBar) {
                 title = ""

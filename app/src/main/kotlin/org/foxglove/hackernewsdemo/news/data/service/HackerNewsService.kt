@@ -1,18 +1,20 @@
 package org.foxglove.hackernewsdemo.news.data.service
 
-import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.experimental.rx2.await
 import org.foxglove.hackernewsdemo.news.data.dto.HackerNewsItemDto
-import retrofit2.http.GET
-import retrofit2.http.Path
 
-interface HackerNewsService {
-    @GET("v0/item/{itemId}.json?print=pretty")
-    fun getItem(@Path("itemId") itemId: Int): Single<HackerNewsItemDto>
+class HackerNewsService(private val hackerNewsRetrofit: HackerNewsRetrofit) :
+    IHackerNewsService {
+    override suspend fun getItem(itemId: Int): HackerNewsItemDto? {
+        return hackerNewsRetrofit.getItem(itemId)
+            .subscribeOn(Schedulers.io())
+            .await()
+    }
 
-    @GET("v0/topstories.json?print=pretty")
-    fun getTopStories(): Single<List<Int>>
+    override suspend fun getTopStories(): List<Int?>? {
+        return hackerNewsRetrofit.getTopStories()
+            .subscribeOn(Schedulers.io())
+            .await()
+    }
 }
-
-
-
-

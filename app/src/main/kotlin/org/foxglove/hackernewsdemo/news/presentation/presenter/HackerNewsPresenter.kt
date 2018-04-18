@@ -4,6 +4,7 @@ import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.runBlocking
 import org.foxglove.hackernewsdemo.news.domain.repository.IHackerNewsRepository
 import org.foxglove.hackernewsdemo.news.ui.view.IHackerNewsView
 
@@ -23,13 +24,20 @@ class HackerNewsPresenter(private val hackerNewsRepository: IHackerNewsRepositor
     }
 
     override fun fetchNews() {
-        launch(UI) {
-            hackerNewsView?.showProgress()
-            val topStories = async {
-                hackerNewsRepository.getTopStories()
-            }.await()
-            hackerNewsView?.showTopStories(topStories)
-            hackerNewsView?.hideProgress()
+        hackerNewsView?.apply {
+            launch(UI) {
+                showProgress()
+                try {
+                    val topStories = async {
+                        hackerNewsRepository.getTopStories()
+                    }.await()
+                    showTopStories(topStories)
+                } catch (throwable: Throwable) {
+                    showError(throwable.message)
+                } finally {
+                    hideProgress()
+                }
+            }
         }
     }
 }
